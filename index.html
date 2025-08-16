@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bus Ticket</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Colors from image */
+    :root {
+      --orange-bg: #f05a28;
+      --card-bg: #fff;
+      --text-dark: #222;
+      --text-muted: #555;
+      --border-color: #dbdbdb;
+      --button-bg: #f05a28;
+      --button-hover-bg: #d1491e;
+    }
+    body {
+      margin: 0;
+      background-color: var(--orange-bg);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      color: var(--text-dark);
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+    .ticket-card {
+      background: var(--card-bg);
+      width: 360px;
+      border-radius: 10px;
+      padding: 1.5rem 1.8rem;
+      box-shadow: 0 2px 10px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+    }
+    /* Top row */
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.65rem;
+    
+    }
+    .divider {
+      border-bottom: 1px solid var(--text-dark);
+      margin: 0.3rem 0 1rem 0;
+    }
+    /* Double row with labels and values */
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .info-values {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 0.94rem;
+      margin-bottom: 0.25rem;
+      color: var(--text-dark);
+    
+    }
+    .label-col {
+      width: 50%;
+    }
+    /* Starting, Ending stops */
+    .stop-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+   
+    }
+    .stop-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-dark);
+    
+    }
+    /* Ticket ID at bottom center */
+    .ticket-id {
+      font-size: 0.67rem;
+      color: var(--text-muted);
+      text-align: center;
+      user-select: all;
+      margin-bottom: 1rem;
+  
+    }
+    /* Show QR button */
+    .qr-button {
+      background-color: var(--button-bg);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 0.55rem 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-bottom: 2rem;
+      transition: background-color 0.25s ease;
+      user-select: none;
+  
+    }
+    .qr-button:hover {
+      background-color: var(--button-hover-bg);
+    }
+    /* QR icon (small pixel style) */
+    .qr-icon {
+      width: 16px;
+      height: 16px;
+      background:
+        #fff 50% 50%/10px 10px no-repeat,
+        var(--card-bg);
+      border: 2px solid #fff;
+      box-sizing: content-box;
+      position: relative;
+    }
+    .qr-icon:before, .qr-icon:after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: white;
+    }
+    .qr-icon:before {
+      top: 2px;
+      left: 2px;
+    }
+    .qr-icon:after {
+      bottom: 2px;
+      right: 2px;
+    }
+    /* Footer text area */
+    footer {
+      text-align: center;
+      font-size: 0.67rem;
+      color: var(--text-muted);
+      user-select: none;
+      font-family: Roboto;
+    }
+    .footer-logo {
+      max-width: 150px;
+      margin: auto;
+      display: block;
+      opacity: 200%;
+      filter: grayscale(1);
+      margin-bottom: 0.15rem;
+      font-family: Roboto;
+    }
+    /* Close button top left */
+    .close-button {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      font-size: 1.6rem;
+      line-height: 1;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 900;
+      background: transparent;
+      border: none;
+      padding: 0;
+      z-index: 100;
+    }
+    /* "All tickets" top right link */
+    .all-tickets {
+      position: fixed;
+      top: 17px;
+      right: 15px;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-weight: 600;
+      text-decoration: underline;
+      z-index: 100;
+    }
+    /* Mobile scaling tweak */
+    @media (max-width: 400px) {
+      .ticket-card {
+        width: 90vw;
+        padding: 1.2rem 1rem;
+      }
+      .body{
+        height: 100%:
+      }
+    }
+    .iit{
+      color:#fff
+      
+    }
+    .iit1{
+      background-color: brown;
+      height: 20px;
+      margin-bottom: 0px;
+      font-family: Roboto,;
+    }
+  </style>
+</head>
+<body>
+  <button class="close-button" aria-label="Close ticket display" title="Close ticket display">&times;</button>
+  <a href="ticket-edit.html" class="all-tickets" aria-label="Go to edit ticket page" title="Go to edit ticket page">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+      class="feather feather-clock" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"></circle>
+      <polyline points="12 6 12 12 16 14"></polyline>
+    </svg>
+    All tickets
+  </a>
+  <main class="container" role="main">
+    <section class="ticket-card" aria-label="Delhi Transport bus ticket">
+      <div class="top-row">
+        <div id="vehicleNumber">DL1PD4765</div>
+        <div>₹<span id="totalFare">10.0</span></div>
+      </div>
+      <div class="divider"></div>
+      
+      <div class="info-row">
+        <div class="label-col">Bus Route</div>
+        <div class="label-col" style="text-align: right;">Fare</div>
+      </div>
+      <div class="info-values">
+        <div id="busRoute">729</div>
+        <div style="text-align: right;">₹<span id="fare">9.0</span></div>
+      </div>
+
+      <div class="info-row" style="margin-top: 0.6rem;">
+        <div class="label-col">Booking Time</div>
+        <div class="label-col" style="text-align: right;">Bus Tickets</div>
+      </div>
+      <div class="info-values">
+        <div id="bookingTime">16 Aug, 25 | 12:00 PM</div>
+        <div style="text-align: right;" id="busTickets">1</div>
+      </div>
+
+      <div class="stop-label">Starting stop</div>
+      <div class="stop-name" id="startingStop">Rajokari Crossing NH-8</div>
+      <div class="stop-label">Ending stop</div>
+      <div class="stop-name" id="endingStop">Kapashera Border</div>
+
+      <div class="ticket-id" id="ticketId">T16082025e3b36235db</div>
+
+      <button class="qr-button" type="button" aria-label="Show QR code">
+        <svg xmlns="http://www.w3.org/2000/svg" class="qr-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+          <rect width="4" height="4" x="2" y="2" fill="white" />
+          <rect width="2" height="2" x="5" y="5" fill="white" />
+          <rect width="4" height="4" x="18" y="18" fill="white" />
+          <rect width="2" height="2" x="19" y="19" fill="white" />
+          <rect width="4" height="4" x="2" y="18" fill="white" />
+          <rect width="2" height="2" x="5" y="21" fill="white" />
+        </svg>
+        Show QR code
+      </button>
+    </section>
+  </main>
+  <footer>
+    <img 
+      src="https://github.com/unknown2021uid/999/blob/main/Img/ondc-removebg-preview.png?raw=true" 
+      alt="Logo with text QF UIC NETWORK in dark blue and light gray colors on transparent background"
+      class="footer-logo" 
+      onerror="this.style.display='none';"
+    />
+    <div class="iit1"><P class="iit">Powered by IIT Delhi</P></div>
+  </footer>
+<script>
+  // Close button just closes window/tab (if possible)
+  document.querySelector('.close-button').addEventListener('click', () => {
+    window.close();
+    // fallback alert if window close is not allowed
+    alert('Close this window/tab manually');
+  });
+
+  // Load ticket data from localStorage or default
+  function loadTicketData() {
+    const defaultData = {
+      vehicleNumber: "DL1PD4765",
+      totalFare: "10.0",
+      busRoute: "729",
+      fare: "9.0",
+      bookingTime: "16 Aug, 25 | 12:00 PM",
+      busTickets: "1",
+      startingStop: "Rajokari Crossing NH-8",
+      endingStop: "Kapashera Border",
+      ticketId: "T16082025e3b36235db"
+    };
+
+    let storedDataStr = localStorage.getItem('busTicketData');
+    let storedData = null;
+
+    try {
+      storedData = JSON.parse(storedDataStr);
+    } catch (e) {
+      storedData = null;
+    }
+
+    const ticketData = storedData ? {...defaultData, ...storedData} : defaultData;
+
+    document.getElementById('vehicleNumber').textContent = ticketData.vehicleNumber;
+    document.getElementById('totalFare').textContent = ticketData.totalFare;
+    document.getElementById('busRoute').textContent = ticketData.busRoute;
+    document.getElementById('fare').textContent = ticketData.fare;
+    document.getElementById('bookingTime').textContent = ticketData.bookingTime;
+    document.getElementById('busTickets').textContent = ticketData.busTickets;
+    document.getElementById('startingStop').textContent = ticketData.startingStop;
+    document.getElementById('endingStop').textContent = ticketData.endingStop;
+    document.getElementById('ticketId').textContent = ticketData.ticketId;
+  }
+
+  window.addEventListener('DOMContentLoaded', loadTicketData);
+</script>
+</body>
+</html>
+
